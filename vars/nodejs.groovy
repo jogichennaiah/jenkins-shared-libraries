@@ -1,3 +1,11 @@
+def lintChecks() {
+     sh "echo Installing JSlist"
+     sh "npm i jslint"
+     sh "echo Starting linkChecks...."
+     sh "node_modules/jslint/bin/jslint.js server.js || true"
+     sh "echo linkCheck completed"
+}
+
 def call() {
 
 
@@ -6,12 +14,11 @@ def call() {
         stages {
             stage('Lint Checks') {
                  steps {
+                    script {
+                        lintChecks()
+                    }
 
-                    sh "echo Installing JSlist"
-                    sh "npm i jslint"
-                    sh "echo Starting linkChecks...."
-                    sh "node_modules/jslint/bin/jslint.js server.js || true"
-                    sh "echo linkCheck completed"
+                    
                 }
                     }
             stage('Generating Artifacts') {
