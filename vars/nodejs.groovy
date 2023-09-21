@@ -3,7 +3,7 @@ def lintChecks() {
      sh "npm i jslint"
      sh "echo Starting linkChecks ${COMPONENT}"
      sh "node_modules/jslint/bin/jslint.js server.js || true"
-     sh "echo linkCheck completed"
+     sh "echo linkCheck completed for ${COMPONENT}"
 }
 
 def call() {
