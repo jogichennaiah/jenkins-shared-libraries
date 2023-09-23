@@ -33,11 +33,11 @@ def call() {
                  }
             }
             stage('Sonar Checks') {
-                sh 'sonar-scanner -Dsonar.host.url=http://${SONAR_URL}:9000/ -Dsonar.sources=. -Dsonar.projectKey=catalogue -Dsonar.login=${SONAR_CRED} -Dsonar.password=${SONAR_CRED}'
-
+                steps {
+                    sh 'env'
+                    sh 'sonar-scanner -Dsonar.host.url=http://${SONAR_URL}:9000/ -Dsonar.sources=. -Dsonar.projectKey=catalogue -Dsonar.login=${SONAR_CRED_USR} -Dsonar.password=${SONAR_CRED_PWD}'  
+                }
             }
-        
-
         } 
      }
 } 
