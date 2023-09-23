@@ -10,7 +10,11 @@ def call() {
 
 
     pipeline {
-        agent any 
+        agent any
+        environment {
+            SONAR_URL = 172.31.21.230
+            SONAR_CRED = credentials('SONAR_CRED')
+        } 
         stages {
             stage('Lint Checks') {
                  steps {
@@ -28,6 +32,11 @@ def call() {
                 
                  }
             }
+            stage('Sonar Checks') {
+                sh 'sonar-scanner -Dsonar.host.url=http://${SONAR_URL}:9000/ -Dsonar.sources=. -Dsonar.projectKey=catalogue -Dsonar.login=${SONAR_CRED} -Dsonar.password=${SONAR_CRED}'
+
+            }
+        
 
         } 
      }
