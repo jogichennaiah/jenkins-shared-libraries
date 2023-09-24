@@ -54,8 +54,7 @@ def call() {
  //                   sh "echo  ${COMPONENT} Sonar Checks are completed" 
  //               }
  //           }
-            stage('Generating Artifacts') {
-                when 
+            stage('Generating Artifacts') { 
                 steps {
                     sh "echo Generating artifacts...."
                     sh "npm install"
