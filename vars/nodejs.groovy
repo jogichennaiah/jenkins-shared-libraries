@@ -55,13 +55,19 @@ def call() {
  //               }
  //           }
             stage('Generating Artifacts') { 
+                when {
+                    expression { env.TAG_NAME != NULL }
+                }
                 steps {
                     sh "echo Generating artifacts...."
+                    SH "env"
                     sh "npm install"
                 
                  }
             }
             stage('Uploading Artifacts') {
+             when {
+                    expression { env.TAG_NAME != NULL }
                 steps {
                     sh "echo Uploading Artifacts..." 
                  }
