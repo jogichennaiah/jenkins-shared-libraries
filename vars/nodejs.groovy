@@ -60,7 +60,7 @@ def call() {
                 }
                 steps {
                     sh "echo Generating artifacts...."
-                    SH "env"
+                    sh "env"
                     sh "npm install"
                 
                  }
