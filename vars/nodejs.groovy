@@ -54,10 +54,10 @@ def call() {
  //                   sh "echo  ${COMPONENT} Sonar Checks are completed" 
  //               }
  //           }
-            stage('Generating Artifacts') { 
+            stage('Generating Artifacts') {
                 //when {
                     //expression { env.TAG_NAME != NULL }
-                }
+                
                 steps {
                     sh "echo Generating artifacts...."
                     sh "env"
@@ -70,7 +70,7 @@ def call() {
             stage('Uploading Artifacts') {
                 //when {
                    //expression { env.TAG_NAME != NULL }
-             }
+             
                 steps {
                     sh "echo Uploading Artifacts..." 
                  }
