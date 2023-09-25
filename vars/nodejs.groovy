@@ -55,20 +55,21 @@ def call() {
  //               }
  //           }
             stage('Generating Artifacts') { 
-                when {
-                    expression { env.TAG_NAME != NULL }
+                //when {
+                    //expression { env.TAG_NAME != NULL }
                 }
                 steps {
                     sh "echo Generating artifacts...."
+                    sh "env"
                     sh "npm install"
-                    sh "zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js"
-                    sh "ls -ltr"
+                    //sh "zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js"
+                    //sh "ls -ltr"
                 
                  }
             }
             stage('Uploading Artifacts') {
-                when {
-                    expression { env.TAG_NAME != NULL }
+                //when {
+                   //expression { env.TAG_NAME != NULL }
              }
                 steps {
                     sh "echo Uploading Artifacts..." 
