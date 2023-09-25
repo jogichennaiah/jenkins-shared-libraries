@@ -60,13 +60,14 @@ def call() {
                 }
                 steps {
                     sh "echo Generating artifacts...."
-                    sh "env"
                     sh "npm install"
+                    sh "zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js"
+                    sh "ls -ltr"
                 
                  }
             }
             stage('Uploading Artifacts') {
-             when {
+                when {
                     expression { env.TAG_NAME != NULL }
              }
                 steps {
