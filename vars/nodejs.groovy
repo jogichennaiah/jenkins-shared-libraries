@@ -50,6 +50,7 @@ def call() {
             stage('Checks The Release') {
                 when {
                     expression { env.TAG_NAME != null }
+
                 }
                 steps {
                     script {
@@ -70,6 +71,7 @@ def call() {
             stage('Generating Artifacts') { 
                 when {
                     expression { env.TAG_NAME != null }
+                    expression { env.UPLOAD_STATUS == ""}
                 }
                 steps {
                     sh "echo Generating artifacts...."
@@ -82,6 +84,7 @@ def call() {
             stage('Uploading Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }
+                    expression { env.UPLOAD_STATUS == ""}
              }
                 steps {
                     sh '''
