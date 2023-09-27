@@ -32,29 +32,58 @@ def lintChecks() {
     }
 }
 
+def lintChecks() {
+    stage('Lint Checks') {
+        if(env.APPTYPE == "nodejs") {
+            sh "echo Installing JSlist"
+            sh "npm i jslint"
+            sh "echo starting linkChecks for ${COMPONENT}"
+            sh "node_modules/jslint/bin/jslint.js server.js || true"
+            sh "echo linkChecks completed for ${COMPONENT}"
+        }
+        else if(env.APPTYPE == "maven") {
+            sh "echo starting linkChecks for ${COMPONENT}"
+            sh "mvn checkstyle:check || true"
+            sh "echo linkChecks completed for ${COMPONENT}"
+        }
+        else if(env.APPTYPE == "pylint") {
+            sh "echo starting linkChecks for ${COMPONENT}"
+            sh "echo linkChecks completed for ${COMPONENT}"
+        }
+        else {
+            sh "echo Lint Checks For Frontend are in progress"
+        }
+    }
+}
+
 def testCases() {
-            stage('Test Cases') {
-                parallel {
-                    stage('Unit Testing') {
-                        steps {
-                            sh "echo Starting Unit Testing"
-                            sh "echo Unit Testing Completed"
-                        }
-                    }
-                    stage('Integration Testing') {
-                        steps {
-                            sh "echo Starting Integration Testing"
-                            sh "echo Integration Testing Completed"
-                        }
-                    }
-                    stage('Functional Testing') {
-                        steps {
-                            sh "echo Starting Functional Testing"
-                            sh "echo Functional Testing Completed"
-                        }
-                          parallel(stages)
-                    }
-                }    
+    stage('Test Cases') {
+        def stages = [:]
+
+        stages["Unit Testing"] = {
+            echo "Unit Testing In Progress"
+            echo "Unit Testing Completed"
+        }
+        stages["Integration Testing"] = {
+            echo "Integration Testing In Progress"
+            echo "Integration Testing Completed"
+        }
+        stages["Functional Testing"] = {
+            echo "Functional Testing In Progress"
+            echo "Functional Testing Completed"
+        }
+        parallel(stages)
+    }
+}
+
+
+def artifacts() {
+
+    stage('Checking the Artifacts Release') {
+          env.UPLOAD_STATUS=sh(returnStdout: true, script: "curl -L -s http://${NEXUS_URL}:8081/service/rest/repository/browse/${COMPONENT} | grep ${COMPONENT}-${TAG_NAME}.zip || true")
+          print UPLOAD_STATUS
+    }
+
     if(env.UPLOAD_STATUS == "") {
         stage('Generating the artifacts') {
                 if(env.APPTYPE == "nodejs") {
@@ -85,9 +114,7 @@ def testCases() {
                     sh "echo Uploading ${COMPONENT} artifact to nexus"
                     sh "curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://${NEXUS_URL}:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip"
                     sh "echo Uploading ${COMPONENT} artifact to nexus is completed"
-                }   
             }                        
         }
     }
 }
-                
