@@ -1,14 +1,24 @@
-def lintChecks() {
-     sh "echo Starting linkChecks ${COMPONENT}"
-     sh "mvn checkstyle:check || true"
-     sh "echo linkCheck completed for ${COMPONENT}"
+def call() {
+    node {
+        git branch: 'main', url: "https://github.com/b55-clouddevops/${COMPONENT}.git"
+        common.lintChecks()
+        env.ARGS="-Dsonar.java.binaries=target/"
+        common.sonarChecks()
+        common.testCases()
+        common.artifacts()
+    }
 }
 
+/*
 def call() {
 
 
     pipeline {
-        agent any 
+        agent any
+        environment {
+            SONAR_URL = "172.31.81.131"
+            SONAR_CRED  = credentials('SONAR_CRED')
+        } 
         stages {
             stage('Lint Checks') {
                  steps {
@@ -75,6 +85,8 @@ def call() {
             }
         }
     }
+
+*/
 
         
      
