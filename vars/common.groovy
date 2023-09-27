@@ -52,8 +52,42 @@ def testCases() {
                             sh "echo Starting Functional Testing"
                             sh "echo Functional Testing Completed"
                         }
+                          parallel(stages)
                     }
+                }    
+    if(env.UPLOAD_STATUS == "") {
+        stage('Generating the artifacts') {
+                if(env.APPTYPE == "nodejs") {
+                    sh "echo Generating Artifiacts...."
+                    sh "npm install"
+                    sh "zip -r ${COMPONENT}-${TAG_NAME}.zip node_modules server.js"
                 }
-            }
-        }
+                else if(env.APPTYPE == "maven") {
+                    sh "echo Generating Artifiacts...."
+                    sh "mvn clean package"
+                    sh "mv target/${COMPONENT}-1.0.jar ${COMPONENT}.jar"
+                    sh "zip -r ${COMPONENT}-${TAG_NAME}.zip ${COMPONENT}.jar"
+                }
+                else if(env.APPTYPE == "python") {
+                    sh "echo Generating Artifiacts...."
+                    sh "zip -r ${COMPONENT}-${TAG_NAME}.zip *.py *.ini requirements.txt"
+                }
+                else {
+                    sh "echo Generating Artifiacts...."
+                    sh "cd static/"
+                    sh "zip -r ../${COMPONENT}-${TAG_NAME}.zip *"
+                    sh "ls -ltr && pwd"
 
+                }      
+            }
+        stage('Uploading the artifacts') {
+            withCredentials([usernamePassword(credentialsId: 'NEXUS_CRED', passwordVariable: 'NEXUS_PSW', usernameVariable: 'NEXUS_USR')]) {
+                    sh "echo Uploading ${COMPONENT} artifact to nexus"
+                    sh "curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://${NEXUS_URL}:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip"
+                    sh "echo Uploading ${COMPONENT} artifact to nexus is completed"
+                }   
+            }                        
+        }
+    }
+}
+                
