@@ -1,25 +1,25 @@
-// def call() {
-//     node {
-//         git branch: 'main', url: "https://github.com/jogichennaiah/${COMPONENT}.git"
-//         common.lintChecks()
-//         env.ARGS="-Dsonar.sources=."
-//         common.sonarChecks()
-//         common.testCases()
-//         common.artifacts()
-//     }
-// }
+def call() {
+    node {
+        git branch: 'main', url: "https://github.com/jogichennaiah/${COMPONENT}.git"
+        common.lintChecks()
+        env.ARGS="-Dsonar.sources=."
+        common.sonarChecks()
+        common.testCases()
+        common.artifacts()
+    }
+}
 
-// def call() {
-//     node {
-//         common.lintChecks()
+def call() {
+    node {
+        common.lintChecks()
 
-//     }
-// }
+    }
+}
 
 
 //Declarative Pipeline
 
-def call() {
+/*def call() {
     pipeline {
         agentany
         stages {
@@ -79,4 +79,4 @@ def call() {
             }
         }
     }
-   
+*/
