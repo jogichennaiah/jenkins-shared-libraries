@@ -17,7 +17,7 @@
 // }
 
 
- Declarative Pipeline
+//Declarative Pipeline
 
 def call() {
     pipeline {
