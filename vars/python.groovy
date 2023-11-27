@@ -9,12 +9,12 @@ def call() {
     }
 }
 
-def call() {
-    node {
-        common.lintChecks()
+// def call() {
+//     node {
+//         common.lintChecks()
 
-    }
-}
+//     }
+// }
 
 
 //Declarative Pipeline
